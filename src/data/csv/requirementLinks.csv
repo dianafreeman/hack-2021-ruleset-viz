@@ -1,4 +1,4 @@
-﻿id(regulator),id(section),id(rule),id(requirement)
+﻿regulator_id,section_id,rule_id,id
 458259,457994,458181,467073
 458259,457994,454000,467401
 458259,457994,467692,466594

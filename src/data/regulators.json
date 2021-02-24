@@ -1,4 +1,5 @@
-{
+[{
+  "id": 458259,
   "relational_type": "Regulator",
   "municipality_location": "",
   "country_location": "United States",
@@ -13,3 +14,4 @@
   "slug": "california-consumer-privacy-act",
   "status": "complete"
 }
+]
