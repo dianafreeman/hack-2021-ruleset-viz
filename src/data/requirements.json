@@ -1,6 +1,7 @@
 [
   {
     "id": 467073,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Informing Consumers about Information Collected and Responding to Requests",
       "aic": "RIC",
@@ -10,6 +11,7 @@
   },
   {
     "id": 467401,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Right to Request Deletion of Personal Information",
       "aic": "RM",
@@ -19,6 +21,7 @@
   },
   {
     "id": 466594,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Conditions for Exemption from Compliance",
       "aic": "RIC",
@@ -28,6 +31,7 @@
   },
   {
     "id": 467308,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Right to Request Disclosure or Access of Information",
       "aic": "RM",
@@ -37,6 +41,7 @@
   },
   {
     "id": 466714,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Disclosure of Information for a Business Purpose",
       "aic": "RIC",
@@ -46,6 +51,7 @@
   },
   {
     "id": 467674,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Conditions for Third Parties to Sell Consumer's Personal Information",
       "aic": "RIC",
@@ -55,6 +61,7 @@
   },
   {
     "id": 467575,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Consumers' opt out rights regarding the Sale of Personal Information",
       "aic": "RIC",
@@ -64,6 +71,7 @@
   },
   {
     "id": 467379,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Nondiscrimination upon Exercise of Privacy Rights",
       "aic": "RM",
@@ -73,6 +81,7 @@
   },
   {
     "id": 466351,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Specifications for Offering Incentives for Collection of Personal Information",
       "aic": "RIC",
@@ -82,6 +91,7 @@
   },
   {
     "id": 467145,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Methodology for Handing Consumer Rights Requests",
       "aic": "RA",
@@ -91,6 +101,7 @@
   },
   {
     "id": 467693,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Opt out Rights and Requests for Personal Information Sales",
       "aic": "RIC",
@@ -100,6 +111,7 @@
   },
   {
     "id": 467633,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Opt out Requests by an Authorized Person",
       "aic": "RIC",
@@ -109,6 +121,7 @@
   },
   {
     "id": 466717,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Notices to Consumers for New or Changed Practices",
       "aic": "RIC",
@@ -118,6 +131,7 @@
   },
   {
     "id": 467421,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Restrictions on Handling Research with Personal Information Collected from Consumers",
       "aic": "RM",
@@ -127,6 +141,7 @@
   },
   {
     "id": 467360,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Specifications for Responding to Consumer Rights Requests",
       "aic": "RIC",
@@ -136,6 +151,7 @@
   },
   {
     "id": 467053,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Disclosures to Certain Service Providers",
       "aic": "RIC",
@@ -145,6 +161,7 @@
   },
   {
     "id": 466734,
+    "relational_type": "requirement",
     "requirement": {
       "summary": "Consumer Right of Private Action",
       "aic": "RIC",
