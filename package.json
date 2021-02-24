@@ -16,13 +16,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "lint": "eslint './src/**/*.js' --fix",
+    "prettify": "prettier ./src --write",
+    "format": "yarn lint && yarn prettify"
   },
   "browserslist": {
     "production": [
@@ -37,6 +33,13 @@
     ]
   },
   "devDependencies": {
-    "csvtojson": "^2.0.10"
+    "@babel/eslint-parser": "^7.13.4",
+    "csvtojson": "^2.0.10",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "prettier": "^2.2.1"
   }
 }
