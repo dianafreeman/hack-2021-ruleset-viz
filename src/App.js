@@ -1,8 +1,8 @@
-import React from 'react';
-import './App.css';
-import Viz from './components/Viz';
+import React from "react";
+import "./App.css";
+import Viz from "./components/Viz";
 
-function App({driver}) {
+function App() {
   return (
     <div className="App">
       <Viz />

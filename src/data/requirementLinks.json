@@ -1,19 +1,104 @@
 [
-{"regulator_id":458259,"section_id":457994,"rule_id":458181,"id":467073},
-{"regulator_id":458259,"section_id":457994,"rule_id":454000,"id":467401},
-{"regulator_id":458259,"section_id":457994,"rule_id":467692,"id":466594},
-{"regulator_id":458259,"section_id":457994,"rule_id":454360,"id":467308},
-{"regulator_id":458259,"section_id":457994,"rule_id":458067,"id":466714},
-{"regulator_id":458259,"section_id":457994,"rule_id":467615,"id":467674},
-{"regulator_id":458259,"section_id":457994,"rule_id":457995,"id":467575},
-{"regulator_id":458259,"section_id":457994,"rule_id":466387,"id":467379},
-{"regulator_id":458259,"section_id":457994,"rule_id":467144,"id":466351},
-{"regulator_id":458259,"section_id":457994,"rule_id":454020,"id":467145},
-{"regulator_id":458259,"section_id":457994,"rule_id":467419,"id":467693},
-{"regulator_id":458259,"section_id":457994,"rule_id":466559,"id":467633},
-{"regulator_id":458259,"section_id":457994,"rule_id":466333,"id":466717},
-{"regulator_id":458259,"section_id":457994,"rule_id":467616,"id":467421},
-{"regulator_id":458259,"section_id":457994,"rule_id":467655,"id":467360},
-{"regulator_id":458259,"section_id":457994,"rule_id":466775,"id":467053},
-{"regulator_id":458259,"section_id":457994,"rule_id":457950,"id":466734}
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 458181,
+    "id": 467073
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 454000,
+    "id": 467401
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467692,
+    "id": 466594
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 454360,
+    "id": 467308
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 458067,
+    "id": 466714
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467615,
+    "id": 467674
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 457995,
+    "id": 467575
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 466387,
+    "id": 467379
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467144,
+    "id": 466351
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 454020,
+    "id": 467145
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467419,
+    "id": 467693
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 466559,
+    "id": 467633
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 466333,
+    "id": 466717
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467616,
+    "id": 467421
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 467655,
+    "id": 467360
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 466775,
+    "id": 467053
+  },
+  {
+    "regulator_id": 458259,
+    "section_id": 457994,
+    "rule_id": 457950,
+    "id": 466734
+  }
 ]

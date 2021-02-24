@@ -1,17 +1,18 @@
-[{
-  "id": 458259,
-  "relational_type": "Regulator",
-  "municipality_location": "",
-  "country_location": "United States",
-  "created_at": 1578004352,
-  "state_territory_location": "California",
-  "regulator_type": "workflow",
-  "uuid": "25f7b75f-460e-41cf-a100-bdf94cd72155",
-  "updated_at": 1587016884,
-  "region_location": "Americas",
-  "max_risk_rating": 0,
-  "name": "California Consumer Privacy Act (CCPA)",
-  "slug": "california-consumer-privacy-act",
-  "status": "complete"
-}
+[
+  {
+    "id": 458259,
+    "relational_type": "Regulator",
+    "municipality_location": "",
+    "country_location": "United States",
+    "created_at": 1578004352,
+    "state_territory_location": "California",
+    "regulator_type": "workflow",
+    "uuid": "25f7b75f-460e-41cf-a100-bdf94cd72155",
+    "updated_at": 1587016884,
+    "region_location": "Americas",
+    "max_risk_rating": 0,
+    "name": "California Consumer Privacy Act (CCPA)",
+    "slug": "california-consumer-privacy-act",
+    "status": "complete"
+  }
 ]
