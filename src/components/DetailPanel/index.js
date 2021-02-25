@@ -1,59 +1,106 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
 import PropTypes from "prop-types";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
 
+import Typography from "@material-ui/core/Typography";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import { Box } from "@material-ui/core";
+import useVizControls from "../../hooks/useVizControls";
+
+const RENDERABLE_VALUES = [
+  "requirement",
+  "rule",
+  "section",
+  "relational_type",
+  "AscentModule",
+  "regulator",
+  "municipality_location",
+  "country_location",
+  "created_at",
+  "state_territory_location",
+  "regulator_type",
+  "uuid",
+  "updated_at",
+  "region_location",
+  "name",
+  "status",
+  "summary",
+  "aic",
+  "uuid",
+  "frequency",
+];
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
     position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
 }));
-function DetailPanel({ node }) {
+function DetailPanel({ node, onClose, selectedValue }) {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setOpen] = useState(true);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const { activeNode, showDetails, toggleShowDetails } = useVizControls();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-      <SimpleModal />
-    </div>
+  const renderableNode = Object.fromEntries(
+    Object.entries(activeNode).filter(([key, _value]) =>
+      RENDERABLE_VALUES.includes(key)
+    )
   );
 
+  const renderJsonAsList = (json) => {
+    return Object.entries(json).forEach(([key, val]) => (
+      <Typography component="span" key={`json-${key} `}>
+        <strong key={`json-${key} `}>{key}</strong>:{val}
+      </Typography>
+    ));
+  };
+
+  console.log(renderableNode);
   return (
-    <div>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
-    </div>
+    <Dialog aria-labelledby="simple-dialog-title" open={showDetails}>
+      <MuiDialogTitle disableTypography>
+        <IconButton
+          style={{ float: "right" }}
+          onClick={() => toggleShowDetails()}
+        >
+          <CloseIcon />
+        </IconButton>
+      </MuiDialogTitle>
+      <Box m={1} p={2}>
+        {Object.keys(renderableNode).map((k) =>
+          typeof renderableNode[k] === "object" ? (
+            Object.keys(renderableNode[k]).map((n) => (
+              <Typography variant="h6" key="">
+                {n}:{renderableNode[k][n]}
+              </Typography>
+            ))
+          ) : (
+            <Typography variant="h6" key="">
+              {k}:{renderableNode[k]}
+            </Typography>
+          )
+        )}
+      </Box>
+    </Dialog>
   );
 }
 
-DetailPanel.propTypes = {};
+DetailPanel.propTypes = {
+  node: PropTypes.shape({
+    id: PropTypes.number,
+  }),
+  onClose: PropTypes.func,
+  selectedValue: PropTypes.string,
+};
 
 export default DetailPanel;
