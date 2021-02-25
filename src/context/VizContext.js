@@ -1,6 +1,7 @@
-import React, { createContext, useRef, useState, useEffect } from 'react';
-import { default as DIRECTIONS } from '../constants/dagDirections';
-import { forceCollide } from 'd3-force';
+import React, { createContext, useRef, useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { default as DIRECTIONS } from "../constants/dagDirections";
+import { forceCollide } from "d3-force";
 
 const VizContext = createContext({
   nodeLabel: (node) => null,
@@ -15,14 +16,15 @@ export const VizProvider = ({ children }) => {
   const graphRef = useRef();
 
   const nodeColor = (node) => {
-    if (node.requirement) return 'red';
-    if (node.rule) return 'orange';
-    if (node.relational_type == 'AscentModule') return 'yellow';
-    if (node.relational_type == 'Regulator') return 'white';
+    if (node.requirement) return "red";
+    if (node.rule) return "orange";
+    if (node.relational_type == "AscentModule") return "yellow";
+    if (node.relational_type == "Regulator") return "white";
   };
 
   const toggleDag = () => setIsDAG(!isDAG);
-  const nodeLabel = (d) => d.requirement?.summary || d.rule?.number || d.name || d.slug;
+  const nodeLabel = (d) =>
+    d.requirement?.summary || d.rule?.number || d.name || d.slug;
 
   const [dagDirection, setDagDirection] = useState(DIRECTIONS.TD.value);
 
@@ -34,14 +36,31 @@ export const VizProvider = ({ children }) => {
   useEffect(() => {
     // add collision force
     graphRef.current.d3Force(
-      'collision',
+      "collision",
       forceCollide((node) => Math.sqrt(100 / (node.level + 1)))
     );
   }, []);
 
   return (
-    <VizContext.Provider value={{ nodeLabel, graphRef, nodeColor, isDAG, toggleDag, dagDirection, setDagDirection }}>
+    <VizContext.Provider
+      value={{
+        nodeLabel,
+        graphRef,
+        nodeColor,
+        isDAG,
+        toggleDag,
+        dagDirection,
+        setDagDirection,
+      }}
+    >
       {children}
     </VizContext.Provider>
   );
+};
+
+VizProvider.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };

@@ -1,8 +1,8 @@
-const regulators = require('./regulators.json');
-const sections = require('./sections.json');
-const requirements = require('./requirements.json');
-const rules = require('./rules.json');
-const requirementLinks = require('./requirementLinks.json');
+const regulators = require("./regulators.json");
+const sections = require("./sections.json");
+const requirements = require("./requirements.json");
+const rules = require("./rules.json");
+const requirementLinks = require("./requirementLinks.json");
 
 export const nodes = [...requirements, ...sections, ...regulators, ...rules];
 export const links = [];

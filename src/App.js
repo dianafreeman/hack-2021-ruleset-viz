@@ -1,13 +1,13 @@
-import React from 'react';
-import './App.css';
-import Viz from './components/Viz';
-import ControlPanel from './components/ControlPanel';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
-import { VizProvider } from './context/VizContext';
+import React from "react";
+import "./App.css";
+import Viz from "./components/Viz";
+import ControlPanel from "./components/ControlPanel";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { VizProvider } from "./context/VizContext";
 
 const darkTheme = createMuiTheme({
   palette: {
-    type: 'dark',
+    type: "dark",
   },
 });
 function App() {

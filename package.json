@@ -1,49 +1,49 @@
 {
-  "name": "hackweek-2021",
-  "author": "Diana M Steakley-Freeman",
-  "version": "0.3.0",
-  "description": "A Regulator/Ruleset Visualization Tool with 2D and 3D interative explorative features",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "d3-force": "^2.1.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-force-graph": "^1.37.6",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "lint": "eslint './src/**/*.js' --fix",
-    "prettify": "prettier ./src --write",
-    "format": "yarn lint && yarn prettify"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/eslint-parser": "^7.13.4",
-    "csvtojson": "^2.0.10",
-    "eslint": "^7.2.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "prettier": "^2.2.1"
-  }
+    "name": "hackweek-2021",
+    "author": "Diana M Steakley-Freeman",
+    "version": "0.3.0",
+    "description": "A Regulator/Ruleset Visualization Tool with 2D and 3D interative explorative features",
+    "private": true,
+    "dependencies": {
+        "@material-ui/core": "^4.11.3",
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "d3-force": "^2.1.1",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-force-graph": "^1.37.6",
+        "react-scripts": "4.0.3",
+        "web-vitals": "^1.0.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "lint": "eslint './src/**/*.js' --fix",
+        "prettify": "prettier ./src --write",
+        "format": "yarn lint && yarn prettify"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.13.4",
+        "csvtojson": "^2.0.10",
+        "eslint": "^7.2.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-prettier": "^3.3.1",
+        "eslint-plugin-react": "^7.22.0",
+        "prettier": "^2.2.1"
+    }
 }
