@@ -9,7 +9,6 @@ import {
 import { nodes, links } from "../data";
 import useVizControls from "../hooks/useVizControls";
 import DetailPanel from "./DetailPanel";
-import { getNodeText } from "@testing-library/react";
 
 const COLORS = {
   requirement: "red",

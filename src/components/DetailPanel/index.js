@@ -46,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function DetailPanel({ node, onClose, selectedValue }) {
-  const classes = useStyles();
-  const [isOpen, setOpen] = useState(true);
-
   const { activeNode, showDetails, toggleShowDetails } = useVizControls();
 
   const renderableNode = Object.fromEntries(
@@ -57,15 +54,6 @@ function DetailPanel({ node, onClose, selectedValue }) {
     )
   );
 
-  const renderJsonAsList = (json) => {
-    return Object.entries(json).forEach(([key, val]) => (
-      <Typography component="span" key={`json-${key} `}>
-        <strong key={`json-${key} `}>{key}</strong>:{val}
-      </Typography>
-    ));
-  };
-
-  console.log(renderableNode);
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={showDetails}>
       <MuiDialogTitle disableTypography>
