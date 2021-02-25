@@ -1,0 +1,5 @@
+﻿id(regulator),id,relational_type,name,created_at,position,uuid,slug
+458259,458162,AscentModule,SECTION 4.,1578004353,4,b21e3416-5ffd-49cd-8189-b7d546f60cf9,california-consumer-privacy-act-section-4
+458259,457994,AscentModule,SECTION 3.,1578004353,3,e82c187e-a9d5-4ef3-9580-97b4eaa2d03f,california-consumer-privacy-act-section-3
+458259,458047,AscentModule,SECTION 2.,1578004352,2,4ee4458f-70d2-438d-83ac-f47e715b87ae,california-consumer-privacy-act-section-2
+458259,458221,AscentModule,SECTION 1.,1578004352,1,2c82d35c-7990-4931-b3cc-6a53d75ef2ab,california-consumer-privacy-act-section-1
