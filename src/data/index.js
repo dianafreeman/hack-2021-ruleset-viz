@@ -14,6 +14,3 @@ requirementLinks.forEach((r) =>
     { source: r.rule_id, target: r.id }
   )
 );
-
-console.log('links', links);
-console.log('nodes', nodes);

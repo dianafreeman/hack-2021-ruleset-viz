@@ -1,29 +1,32 @@
+import { Typography } from '@material-ui/core';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { ForceGraph2D, ForceGraph3D, ForceGraphVR, ForceGraphAR } from 'react-force-graph';
 import { nodes, links } from '../data';
+import useVizControls from '../hooks/useVizControls';
 
 const COLORS = {
   requirement: 'red',
   section: 'green',
 };
 
-const nodeColor = (d) => {
-  if (d.requirement) return 'red';
-  if (d.rule) return 'orange';
-  if (d.relational_type == 'AscentModule') return 'yellow';
-  if (d.relational_type == 'Regulator') return 'white';
+const NodeDetails = (node) => {
+  // const stuff =
+  return Object.entries(node).map((key, val) => (
+    <>
+      <Typography style={{ fontWeight: '800' }}>{key}:</Typography>
+      <Typography> {val}</Typography>
+    </>
+  ));
 };
-
-const nodeLabel = (d) => d.requirement?.summary || d.rule?.number || d.name || d.slug;
 
 const Viz = () => {
   const [data, setData] = useState({ nodes, links });
+  const { isDAG, nodeColor, nodeLabel, dagDirection, graphRef } = useVizControls();
 
-  const graphRef = useRef();
   const handleClick = useCallback(
     (node) => {
       // Aim at node from outside it
-      const distance = 40;
+      const distance = 50;
       const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
 
       graphRef.current.cameraPosition(
@@ -34,13 +37,24 @@ const Viz = () => {
     },
     [graphRef]
   );
+
+  // OPEN DETAILS IN CENTER MODAL, witha close button
   return (
     <ForceGraph3D
-      ref={graphRef}
+      backgroundColor={'#101020'}
+      d3VelocityDecay={0.2}
+      dagLevelDistance={100}
+      dagMode={isDAG ? dagDirection : false}
+      enableNodeDrag={false}
       graphData={data}
+      linkColor={() => 'rgba(255,255,255,0.2)'}
+      linkDirectionalParticles={1}
+      linkDirectionalParticleWidth={2}
       nodeColor={nodeColor}
       nodeLabel={nodeLabel}
       onNodeClick={handleClick}
+      nodeRelSize={3}
+      ref={graphRef}
     />
   );
 };
