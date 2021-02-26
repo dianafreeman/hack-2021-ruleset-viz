@@ -1,18 +1,24 @@
-import React,{ useState} from "react";
-import PropTypes from 'prop-types'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "./App.css";
 import Viz from "./components/Viz";
 import ControlPanel from "./components/ControlPanel";
-import { ThemeProvider, createMuiTheme, Container, Button, TextField, Box} from "@material-ui/core";
+import {
+  ThemeProvider,
+  createMuiTheme,
+  Container,
+  Button,
+  TextField,
+  Box,
+} from "@material-ui/core";
 import { VizProvider } from "./context/VizContext";
 import { makeStyles } from "@material-ui/core/styles";
-
 
 const useStyles = makeStyles((theme) => ({
   bg: {
     backgroundColor: theme.palette.background.default,
-    justifyContent: 'center',
-    display: 'flex'
+    justifyContent: "center",
+    display: "flex",
   },
   form: {
     width: "80%", // Fix IE 11 issue.
@@ -28,14 +34,14 @@ const darkTheme = createMuiTheme({
   },
 });
 
-const EnterPasscode = ({setLoggedIn}) => {
-  const [entry,setEntry]= useState("")
+const EnterPasscode = ({ setLoggedIn }) => {
+  const [entry, setEntry] = useState("");
 
-  const classes = useStyles()
+  const classes = useStyles();
   const handleSubmit = (ev) => {
-    ev.preventDefault()
-    if (entry === process.env.REACT_APP_SECRET_CODE) return setLoggedIn(true)//console.log("Correct!");
-  }
+    ev.preventDefault();
+    if (entry === process.env.REACT_APP_SECRET_CODE) return setLoggedIn(true); //console.log("Correct!");
+  };
   return (
     <Container fixed fullWidth className={classes.bg}>
       <Box className={classes.form}>
@@ -64,14 +70,14 @@ const EnterPasscode = ({setLoggedIn}) => {
       </Box>
     </Container>
   );
-}
+};
 EnterPasscode.propTypes = {
-  setLoggedIn: PropTypes.func
-}
+  setLoggedIn: PropTypes.func,
+};
 
 function App() {
-  const code = btoa(process.env.SECRET_CODE)
-  const [isLoggedIn, setLoggedIn] = useState(false)
+  const code = btoa(process.env.SECRET_CODE);
+  const [isLoggedIn, setLoggedIn] = useState(false);
   return (
     <ThemeProvider theme={darkTheme}>
       {isLoggedIn ? (

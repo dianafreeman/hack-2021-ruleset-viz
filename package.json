@@ -1,8 +1,13 @@
 {
-    "name": "hackweek-2021",
+    "name": "hack-2021-ruleset-viz",
     "author": "Diana M Steakley-Freeman",
     "version": "0.3.0",
     "description": "A Regulator/Ruleset Visualization Tool with 2D and 3D interative explorative features",
+    "homepage": "http://witty-memory.surge.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dianafreeman/hack-2021-ruleset-viz.git"
+  },
     "private": true,
     "dependencies": {
         "@material-ui/core": "^4.11.3",

@@ -54,7 +54,7 @@ const makeColorMap = (palette) => {
   };
 };
 const use2dTextNodes = () => {
-    const { palette } = useTheme();
+  const { palette } = useTheme();
 
   const nodeCanvasObject = (node, ctx, globalScale) => {
     const colorMap = makeColorMap(palette);
@@ -154,7 +154,7 @@ export const VizProvider = ({ children }) => {
   }, [graphRef]);
 
   const { palette } = useTheme();
-    const colorMap = makeColorMap(palette);
+  const colorMap = makeColorMap(palette);
 
   const nodeColor = (node) => {
     return node.relational_type
@@ -168,7 +168,6 @@ export const VizProvider = ({ children }) => {
   };
 
   const nodeThreeObject = (node) => {
-
     const sprite = new SpriteText(node.relational_type || node.label);
     sprite.color = node.relational_type
       ? colorMap[node.relational_type]
@@ -210,7 +209,6 @@ export const VizProvider = ({ children }) => {
       do2dZoom(node, graphRef, ms);
     }
   };
-
 
   const { nodeCanvasObject, nodePointerAreaPaint } = use2dTextNodes();
 
