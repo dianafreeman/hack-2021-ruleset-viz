@@ -1,1 +1,42 @@
-[{"id(regulator)":"458259","id":"458162","relational_type":"AscentModule","name":"SECTION 4.","created_at":"1578004353","position":"4","uuid":"b21e3416-5ffd-49cd-8189-b7d546f60cf9","slug":"california-consumer-privacy-act-section-4"},{"id(regulator)":"458259","id":"457994","relational_type":"AscentModule","name":"SECTION 3.","created_at":"1578004353","position":"3","uuid":"e82c187e-a9d5-4ef3-9580-97b4eaa2d03f","slug":"california-consumer-privacy-act-section-3"},{"id(regulator)":"458259","id":"458047","relational_type":"AscentModule","name":"SECTION 2.","created_at":"1578004352","position":"2","uuid":"4ee4458f-70d2-438d-83ac-f47e715b87ae","slug":"california-consumer-privacy-act-section-2"},{"id(regulator)":"458259","id":"458221","relational_type":"AscentModule","name":"SECTION 1.","created_at":"1578004352","position":"1","uuid":"2c82d35c-7990-4931-b3cc-6a53d75ef2ab","slug":"california-consumer-privacy-act-section-1"}]
+[
+  {
+    "id(regulator)": "458259",
+    "id": "458162",
+    "relational_type": "AscentModule",
+    "name": "SECTION 4.",
+    "created_at": "1578004353",
+    "position": "4",
+    "uuid": "b21e3416-5ffd-49cd-8189-b7d546f60cf9",
+    "slug": "california-consumer-privacy-act-section-4"
+  },
+  {
+    "id(regulator)": "458259",
+    "id": "457994",
+    "relational_type": "AscentModule",
+    "name": "SECTION 3.",
+    "created_at": "1578004353",
+    "position": "3",
+    "uuid": "e82c187e-a9d5-4ef3-9580-97b4eaa2d03f",
+    "slug": "california-consumer-privacy-act-section-3"
+  },
+  {
+    "id(regulator)": "458259",
+    "id": "458047",
+    "relational_type": "AscentModule",
+    "name": "SECTION 2.",
+    "created_at": "1578004352",
+    "position": "2",
+    "uuid": "4ee4458f-70d2-438d-83ac-f47e715b87ae",
+    "slug": "california-consumer-privacy-act-section-2"
+  },
+  {
+    "id(regulator)": "458259",
+    "id": "458221",
+    "relational_type": "AscentModule",
+    "name": "SECTION 1.",
+    "created_at": "1578004352",
+    "position": "1",
+    "uuid": "2c82d35c-7990-4931-b3cc-6a53d75ef2ab",
+    "slug": "california-consumer-privacy-act-section-1"
+  }
+]

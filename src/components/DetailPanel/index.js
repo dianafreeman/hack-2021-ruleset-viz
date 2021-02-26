@@ -65,19 +65,11 @@ function DetailPanel({ node, onClose, selectedValue }) {
         </IconButton>
       </MuiDialogTitle>
       <Box m={1} p={2}>
-        {Object.keys(renderableNode).map((k) =>
-          typeof renderableNode[k] === "object" ? (
-            Object.keys(renderableNode[k]).map((n) => (
-              <Typography variant="h6" key="">
-                {n}:{renderableNode[k][n]}
-              </Typography>
-            ))
-          ) : (
-            <Typography variant="h6" key="">
-              {k}:{renderableNode[k]}
-            </Typography>
-          )
-        )}
+        {Object.keys(renderableNode).map((k) => (
+          <Typography variant="h6" key="">
+            {k}:{renderableNode[k]}
+          </Typography>
+        ))}
       </Box>
     </Dialog>
   );

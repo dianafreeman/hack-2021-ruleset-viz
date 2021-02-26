@@ -1,1 +1,14 @@
-[{"id(regulator)":"458259","id":"706125","uuid":"387","content":"What type of transactions do you engage in?"},{"id(regulator)":"458259","id":"706124","uuid":"386","content":"What type of entity are you?"}]
+[
+  {
+    "id(regulator)": "458259",
+    "id": "706125",
+    "uuid": "387",
+    "content": "What type of transactions do you engage in?"
+  },
+  {
+    "id(regulator)": "458259",
+    "id": "706124",
+    "uuid": "386",
+    "content": "What type of entity are you?"
+  }
+]

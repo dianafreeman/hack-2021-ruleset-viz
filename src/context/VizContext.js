@@ -8,12 +8,16 @@ import React, {
 import PropTypes from "prop-types";
 import { default as DIRECTIONS } from "../constants/dagDirections";
 import { forceCollide } from "d3-force";
+import { ForceGraph2D, ForceGraph3D } from "react-force-graph";
+import * as data from "../data";
+
 
 const ZOOM_DURATION = 3000; // ms
+
 const VizContext = createContext({
-  nodeLabel: (node) => null,
-  nodeColor: (node) => null,
-  dagDirection: null,
+  settings: {},
+  controls: {},
+  component: {},
 });
 
 export default VizContext;
@@ -33,8 +37,15 @@ const zoomToNode = (node, graphRef, ms = ZOOM_DURATION) => {
     ms // ms transition duration
   );
 };
+const DIMENSIONS = {
+  TWO: "TWO",
+  THREE: "THREE",
+};
 export const VizProvider = ({ children }) => {
-  const [cameraPosOnMount, setCameraView] = useState({});
+  const { TWO, THREE } = DIMENSIONS;
+  const [nodes, setNodes] = useState(data.nodes);
+  const [links, setLinks] = useState(data.links);
+  const [dimension, setDimension] = useState(THREE);
   const [activeNode, setActiveNode] = useState(false);
   const [dagDirection, setDagDirection] = useState(DIRECTIONS.TD.value);
   const [isDAG, setIsDAG] = useState(false);
@@ -49,25 +60,35 @@ export const VizProvider = ({ children }) => {
   }, [graphRef]);
 
   const nodeColor = (node) => {
-    if (node.requirement) return "red";
-    if (node.rule) return "orange";
-    if (node.relational_type == "AscentModule") return "yellow";
+    if (node.relational_type == "Requirement") return "red";
+    if (node.relational_type == "SupportingInformation") return "green";
+    if (node.relational_type == "Rule") return "blue";
+    if (node.relational_type == "AscentModule") return "purple";
+    if (node.relational_type == "Subject") return "purple";
     if (node.relational_type == "Regulator") return "white";
+    return "white";
   };
 
+
+  // CONTROLS
   const toggleDag = () => setIsDAG(!isDAG);
-  const nodeLabel = (d) =>
-    d.requirement?.summary || d.rule?.number || d.name || d.slug;
+  const nodeLabel = (node) => node.relational_type || node.label;
 
-  const onNodeClick = (node) => {
+  const onNodeHover = () => {
     setActiveNode(node);
-    zoomToClickedNode(node);
-    setTimeout(toggleShowDetails, ZOOM_DURATION);
   };
-
+  const onNodeClick = (node) => {
+    zoomToClickedNode(node);
+    setTimeout(toggleShowDetails, ZOOM_DURATION / 2);
+  };
   const zoomToClickedNode = useCallback((node) => zoomToNode(node, graphRef), [
     graphRef,
   ]);
+
+  const VizComponent = React.forwardRef(function Wrapper(props, ref) {
+   return dimension === TWO ? <ForceGraph2D ref={ref} {...props}/> : <ForceGraph3D ref={ref} {...props}/>
+  })
+
 
   const useForceUpdate = () => {
     const setToggle = useState(false)[1];
@@ -82,26 +103,38 @@ export const VizProvider = ({ children }) => {
     );
   }, []);
 
-  useEffect(() => {
-    const initialCamPos = graphRef.current.camera().position;
-    setCameraView(initialCamPos);
-  }, []);
-
+  // SETTINGS
+  const settings = {
+    ref: graphRef,
+    backgroundColor: "#101020",
+    d3VelocityDecay: 0.2,
+    dagLevelDistance: 100,
+    linkColor: (node) => "rgba(255,255,255,0.2)",
+    linkDirectionalParticles: 1,
+    linkDirectionalParticleWidth: 2,
+    nodeColor,
+    nodeLabel,
+    onNodeClick,
+    onBackgroundClick: () => resetCameraView(),
+    nodeRelSize: 3,
+  };
   return (
     <VizContext.Provider
       value={{
-        nodeLabel,
+        VizComponent,
         graphRef,
-        nodeColor,
-        isDAG,
-        toggleDag,
-        dagDirection,
-        activeNode,
-        onNodeClick,
-        showDetails,
-        toggleShowDetails,
-        setDagDirection,
-        resetCameraView,
+        controls: {
+          isDAG,
+          toggleDag,
+          dagDirection,
+          activeNode,
+          onNodeClick,
+          showDetails,
+          toggleShowDetails,
+          setDagDirection,
+          resetCameraView,
+        },
+        settings,
       }}
     >
       {children}

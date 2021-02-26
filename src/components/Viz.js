@@ -1,13 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import {
-  ForceGraph2D,
-  ForceGraph3D,
-  ForceGraphVR,
-  ForceGraphAR,
-} from "react-force-graph";
+
 import { nodes, links } from "../data";
 import useVizControls from "../hooks/useVizControls";
+import useVizComponent from "../hooks/useVizComponent";
+import useVizSettings from "../hooks/useVizSettings";
 import DetailPanel from "./DetailPanel";
 
 const COLORS = {
@@ -27,25 +24,18 @@ const Viz = () => {
     graphRef,
   } = useVizControls();
 
+  const Vizualizer = useVizComponent();
+  const settings = useVizSettings();
+
   return (
     <>
       <DetailPanel />
-      <ForceGraph3D
-        backgroundColor={"#101020"}
-        d3VelocityDecay={0.2}
-        dagLevelDistance={100}
+      <Vizualizer
+      ref={graphRef}
+        {...settings}
         dagMode={isDAG ? dagDirection : null}
         enableNodeDrag={false}
         graphData={data}
-        linkColor={() => "rgba(255,255,255,0.2)"}
-        linkDirectionalParticles={1}
-        linkDirectionalParticleWidth={2}
-        nodeColor={nodeColor}
-        nodeLabel={nodeLabel}
-        onNodeClick={onNodeClick}
-        onBackgroundClick={() => resetCameraView()}
-        nodeRelSize={3}
-        ref={graphRef}
       />
     </>
   );

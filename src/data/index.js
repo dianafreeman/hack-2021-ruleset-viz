@@ -18,7 +18,9 @@ const parseIdsAsInteger = (node) => {
 const regulatorNodes = regulators.map(parseIdsAsInteger);
 const regulatorLinks = [];
 
-const questionNodes = questions.map(q => ({...q, label: "Question"})).map(parseIdsAsInteger)
+const questionNodes = questions
+  .map((q) => ({ ...q, label: "Question" }))
+  .map(parseIdsAsInteger);
 const questionLinks = questionNodes.map((q) => ({
   source: q.id,
   target: q["id(regulator)"],
@@ -77,13 +79,13 @@ const supportingInfoLinks = [
 ];
 
 const supportingInfoLinks_DAGsafe = supportingInfoNodes.map((si) => ({
-    source: si["id(rule)"],
-    target: si.id,
-    label: "SLICED_INTO",
-}))
+  source: si["id(rule)"],
+  target: si.id,
+  label: "SLICED_INTO",
+}));
 
 export const nodes = [
-//  const nodes = [
+  //  const nodes = [
   ...regulatorNodes,
   ...questionNodes,
   ...answerNodes,
@@ -105,8 +107,8 @@ export const links = [
   ...supportingInfoLinks,
 ];
 
-console.log(nodes)
-console.log(links)
+console.log(nodes);
+console.log(links);
 /*
 RULES
 MATCH p=(reg:Regulator {name: "California Consumer Privacy Act (CCPA)"})-[:SLICED_INTO]->(module:Section)-[:SLICED_INTO]->(subject:Section)-[:SLICED_INTO]->(rule:Rule)
