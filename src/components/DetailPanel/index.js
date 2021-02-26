@@ -41,7 +41,7 @@ function DetailPanel({ node, onClose, selectedValue }) {
     resumeAnimation,
   } = useVizControls();
 
-  const theme = useTheme()
+  const theme = useTheme();
 
   const renderableNode = Object.fromEntries(
     Object.entries(activeNode).filter(([key, _value]) =>
@@ -54,7 +54,11 @@ function DetailPanel({ node, onClose, selectedValue }) {
     resumeAnimation();
   };
 
-  const nodeTitle = activeNode.title || activeNode.name || activeNode.number || activeNode.label;
+  const nodeTitle =
+    activeNode.title ||
+    activeNode.name ||
+    activeNode.number ||
+    activeNode.label;
   return (
     <Dialog aria-labelledby="simple-dialog-title" open={showDetails}>
       <MuiDialogTitle disableTypography>
@@ -73,9 +77,7 @@ function DetailPanel({ node, onClose, selectedValue }) {
             <span style={{ color: theme.palette.primary.light }}>
               {k.replace("_", " ").toString().toUpperCase()}:
             </span>
-            <span>
-            {renderableNode[k]}
-            </span>
+            <span>{renderableNode[k]}</span>
           </Typography>
         ))}
       </Box>

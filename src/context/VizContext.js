@@ -30,6 +30,7 @@ import {
 } from "../data";
 import DIMENSIONS from "../constants/dimensions";
 import SpriteText from "three-spritetext";
+import { AtmTwoTone } from "@material-ui/icons";
 
 const VizContext = createContext({
   settings: {},
@@ -41,7 +42,6 @@ export default VizContext;
 
 const ZOOM_DURATION = 3000; // ms
 const makeColorMap = (palette) => {
-
   return {
     Requirement: palette.error.main,
     SupportingInformation: palette.success.main,
@@ -54,6 +54,8 @@ const makeColorMap = (palette) => {
   };
 };
 const use2dTextNodes = () => {
+    const { palette } = useTheme();
+
   const nodeCanvasObject = (node, ctx, globalScale) => {
     const colorMap = makeColorMap(palette);
     const label = node.relational_type || node.label;
@@ -92,12 +94,12 @@ const use2dTextNodes = () => {
   return { nodeCanvasObject, nodePointerAreaPaint };
 };
 export const VizProvider = ({ children }) => {
-  const { THREE } = DIMENSIONS;
+  const { TWO, THREE } = DIMENSIONS;
 
-  const [particlesOn, setParticlesOn] = useState(false);
+  const [particlesOn, setParticlesOn] = useState(true);
   const [isTextNodes, setTextNodes] = useState(false);
-  const [allowCircularRefs, setAllowCircularRefs] = useState(false);
-  const [dimension, setActiveDimension] = useState(THREE);
+  const [allowCircularRefs, setAllowCircularRefs] = useState(true);
+  const [dimension, setActiveDimension] = useState(TWO);
   const [activeNode, setActiveNode] = useState({});
   const [dagDirection, setDagDirection] = useState(DIRECTIONS.TD.value);
   const [isDAG, setIsDAG] = useState(false);
@@ -124,8 +126,8 @@ export const VizProvider = ({ children }) => {
     ...requirementLinks,
   ];
 
-  const [nodes, setNodes] = useState(DefaultNodes);
-  const [links, setLinks] = useState(DefaultLinks);
+  const [nodes, setNodes] = useState([...DefaultNodes, ...supportingInfoNodes]);
+  const [links, setLinks] = useState([...DefaultLinks, ...supportingInfoLinks]);
 
   const enableCircularRefs = () => {
     setAllowCircularRefs(!allowCircularRefs);
@@ -141,7 +143,7 @@ export const VizProvider = ({ children }) => {
   const toggleShowDetails = () => setShowDetails(!showDetails);
   const graphRef = useRef();
 
-  const toggleParticles = () => setParticlesOn(!particlesOn)
+  const toggleParticles = () => setParticlesOn(!particlesOn);
   const useForceUpdate = () => {
     const setToggle = useState(false)[1];
     return () => setToggle((b) => !b);
@@ -152,9 +154,9 @@ export const VizProvider = ({ children }) => {
   }, [graphRef]);
 
   const { palette } = useTheme();
+    const colorMap = makeColorMap(palette);
 
   const nodeColor = (node) => {
-    const colorMap = makeColorMap(palette);
     return node.relational_type
       ? colorMap[node.relational_type]
       : colorMap[node.label];
@@ -166,10 +168,11 @@ export const VizProvider = ({ children }) => {
   };
 
   const nodeThreeObject = (node) => {
+
     const sprite = new SpriteText(node.relational_type || node.label);
     sprite.color = node.relational_type
-      ? COLOR_MAP[node.relational_type]
-      : COLOR_MAP[node.label];
+      ? colorMap[node.relational_type]
+      : colorMap[node.label];
     sprite.textHeight = 8;
     return sprite;
   };
@@ -200,13 +203,14 @@ export const VizProvider = ({ children }) => {
     [graphRef]
   );
 
-  const zoomToNode = useCallback(
-    (node, graphRef, dimension, ms = ZOOM_DURATION) => {
-      if (dimension === DIMENSIONS.THREE) return do3dZoom(node, graphRef, ms);
-      return do2dZoom(node, graphRef, ms);
-    },
-    [dimension]
-  );
+  const zoomToNode = (node, graphRef, dimension, ms = ZOOM_DURATION) => {
+    try {
+      do3dZoom(node, graphRef, ms);
+    } catch (err) {
+      do2dZoom(node, graphRef, ms);
+    }
+  };
+
 
   const { nodeCanvasObject, nodePointerAreaPaint } = use2dTextNodes();
 
@@ -232,18 +236,14 @@ export const VizProvider = ({ children }) => {
     setActiveNode(node);
     zoomToClickedNode(node);
     toggleShowDetails();
-    // setTimeout(() => {
-    //   console.log("dimension on node click", dimension);
-    //   graphRef.current.pauseAnimation();
-    // }, ZOOM_DURATION);
   };
+
   const zoomToClickedNode = useCallback(
     (node) => zoomToNode(node, graphRef, dimension),
-    [graphRef,dimension]
+    [graphRef, dimension]
   );
 
   useEffect(() => {
-    const {d3Force} = graphRef.current
     // add collision force
     graphRef.current.d3Force(
       "collision",
@@ -257,7 +257,7 @@ export const VizProvider = ({ children }) => {
     backgroundColor: palette.background.default,
     d3VelocityDecay: 0.2,
     dagLevelDistance: 100,
-    linkLabel: link => link.label,
+    linkLabel: (link) => link.label,
     linkColor: (node) => "rgba(255,255,255,0.3)",
     linkWidth: 1,
     linkDirectionalParticles: particlesOn ? 1 : null,
@@ -266,7 +266,7 @@ export const VizProvider = ({ children }) => {
     nodeLabel,
     onNodeClick,
     onBackgroundClick: () => resetCameraView(),
-    nodeRelSize: 3,
+    nodeRelSize: 4,
     nodeThreeObject: isTextNodes ? nodeThreeObject : null,
     nodeCanvasObject: isTextNodes ? nodeCanvasObject : null,
     nodePointerAreaPaint: isTextNodes ? nodePointerAreaPaint : null,
@@ -277,7 +277,7 @@ export const VizProvider = ({ children }) => {
         graphRef,
         controls: {
           toggleParticles,
-particlesOn,
+          particlesOn,
           isTextNodes,
           toggleTextNodes,
           toggleCircularRefs,

@@ -37,7 +37,7 @@ const DagControls = () => {
     activeDimension,
   } = useVizControls();
   return (
-    <Box>
+    <Box px={2} mb={2}>
       <Typography variant="h6" align="left">
         DAG Settings
       </Typography>
@@ -181,27 +181,26 @@ function ControlPanel(props) {
   return (
     <Box p={1} w={1} className={classes.root}>
       <DagControls />
-
-      <Box display="flex" justifyContent="space-evenly">
-        <Box>
+      <Box display="flex">
+        <Box px={2}>
           <Typography variant="h6" align="left">
             View In
           </Typography>
           <DimensionControl />
         </Box>
-        <Box>
+        <Box px={2}>
           <Typography variant="h6" align="left">
             Circular References
           </Typography>
           <CircularRefSettings />
         </Box>
-        <Box>
+        <Box px={2}>
           <Typography variant="h6" align="left">
             ParticleEmissions
           </Typography>
           <ParticleSettings />
         </Box>
-        <Box>
+        <Box px={2}>
           <Typography variant="h6" align="left">
             Text Nodes
           </Typography>
