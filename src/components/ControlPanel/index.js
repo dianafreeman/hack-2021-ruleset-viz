@@ -6,14 +6,17 @@ import Box from "@material-ui/core/Box";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Switch from "@material-ui/core/Switch";
+import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { Typography } from "@material-ui/core";
 import useVizControls from "../../hooks/useVizControls";
 import { default as DAG_DIRECTION_MAP } from "../../constants/dagDirections";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import DIMENSIONS from "../../constants/dimensions";
 
-const DIMENSION_VALUES = ["2D", "3D"];
-
+const { TWO, THREE } = DIMENSIONS;
 const useStyles = makeStyles({
   root: {
     position: "fixed",
@@ -25,14 +28,28 @@ const useStyles = makeStyles({
 });
 
 const DagControls = () => {
-  const { isDAG, dagDirection, setDagDirection, toggleDag } = useVizControls();
-
+  const {
+    isDAG,
+    dagDirection,
+    setDagDirection,
+    toggleDag,
+    allowCircularRefs,
+    activeDimension,
+  } = useVizControls();
   return (
-    <Box align="left">
+    <Box>
+      <Typography variant="h6" align="left">
+        DAG Settings
+      </Typography>
       <FormControl component="fieldset">
         <FormControlLabel
           control={
-            <Switch checked={isDAG} onClick={() => toggleDag()} name="isDAG" />
+            <Switch
+              checked={isDAG}
+              disabled={allowCircularRefs}
+              onClick={() => toggleDag()}
+              name="isDAG"
+            />
           }
           label={`DAG Mode ${isDAG ? "ON" : "OFF"}`}
         />
@@ -44,33 +61,153 @@ const DagControls = () => {
           value={dagDirection}
           onChange={(ev) => setDagDirection(ev.target.value)}
         >
-          {Object.values(DAG_DIRECTION_MAP).map(({ value, label }) => (
-            <FormControlLabel
-              key={`radio-${value}`}
-              disabled={!isDAG}
-              value={value}
-              color="secondary"
-              control={<Radio />}
-              label={label}
-            />
-          ))}
+          {Object.values(DAG_DIRECTION_MAP).map(({ value, label }) => {
+            const conditionalDisabled =
+              activeDimension === TWO && (value === "zout" || value === "zin");
+            return (
+              <FormControlLabel
+                key={`radio-${value}`}
+                disabled={allowCircularRefs || !isDAG || conditionalDisabled}
+                value={value}
+                color="secondary"
+                control={<Radio />}
+                label={label}
+              />
+            );
+          })}
         </RadioGroup>
       </FormControl>
     </Box>
   );
 };
-function ControlPanel(props) {
-  const { isDAG, dagDirection, setDagDirection, toggleDag } = useVizControls();
 
+const DimensionControl = () => {
+  const {
+    activeDimension,
+    setActiveDimension,
+    useForceUpdate,
+  } = useVizControls();
+
+  const forceUpdate = useForceUpdate();
+  const handleDimension = (_ev, newDim) => {
+    setActiveDimension(newDim);
+    forceUpdate();
+  };
+  return (
+    <Box>
+      <ToggleButtonGroup
+        value={activeDimension}
+        exclusive
+        onChange={handleDimension}
+        aria-label="text alignment"
+      >
+        <ToggleButton value={TWO} aria-label="left aligned">
+          <Typography variant="button">2D</Typography>
+        </ToggleButton>
+        <ToggleButton value={THREE} aria-label="centered">
+          <Typography variant="button">3D</Typography>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+};
+
+const CircularRefSettings = () => {
+  const { isDAG, allowCircularRefs, toggleCircularRefs } = useVizControls();
+
+  return (
+    <Box>
+      <ToggleButtonGroup
+        value={allowCircularRefs}
+        exclusive
+        onChange={() => toggleCircularRefs()}
+        aria-label="toggle circular references"
+      >
+        <ToggleButton disabled={isDAG} value={true} aria-label="left aligned">
+          <Typography variant="button">Enabled</Typography>
+        </ToggleButton>
+        <ToggleButton disabled={isDAG} value={false} aria-label="centered">
+          <Typography variant="button">Disabled</Typography>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+};
+const TextNodeSettings = () => {
+  const { toggleTextNodes, isTextNodes } = useVizControls();
+
+  return (
+    <Box>
+      <ToggleButtonGroup
+        value={isTextNodes}
+        exclusive
+        onChange={() => toggleTextNodes()}
+        aria-label="toggle circular references"
+      >
+        <ToggleButton value={true} aria-label="left aligned">
+          <Typography variant="button">Enabled</Typography>
+        </ToggleButton>
+        <ToggleButton value={false} aria-label="centered">
+          <Typography variant="button">Disabled</Typography>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+};
+const ParticleSettings = () => {
+  const { toggleParticles, particlesOn } = useVizControls();
+
+  return (
+    <Box>
+      <ToggleButtonGroup
+        value={particlesOn}
+        exclusive
+        onChange={() => toggleParticles()}
+        aria-label="toggle particle emissions"
+      >
+        <ToggleButton value={true} aria-label="left aligned">
+          <Typography variant="button">On</Typography>
+        </ToggleButton>
+        <ToggleButton value={false} aria-label="centered">
+          <Typography variant="button">Off</Typography>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
+  );
+};
+function ControlPanel(props) {
   const classes = useStyles();
+  const [isOpen, setOpen] = useState(false);
   return (
     <Box p={1} w={1} className={classes.root}>
-      <Typography variant="h6" align="left">
-        DAG Settings
-      </Typography>
       <DagControls />
 
-      <Box align="left">{/* checkboxes for some other stuff*/}</Box>
+      <Box display="flex" justifyContent="space-evenly">
+        <Box>
+          <Typography variant="h6" align="left">
+            View In
+          </Typography>
+          <DimensionControl />
+        </Box>
+        <Box>
+          <Typography variant="h6" align="left">
+            Circular References
+          </Typography>
+          <CircularRefSettings />
+        </Box>
+        <Box>
+          <Typography variant="h6" align="left">
+            ParticleEmissions
+          </Typography>
+          <ParticleSettings />
+        </Box>
+        <Box>
+          <Typography variant="h6" align="left">
+            Text Nodes
+          </Typography>
+          <TextNodeSettings />
+        </Box>
+      </Box>
     </Box>
   );
 }

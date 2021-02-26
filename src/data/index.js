@@ -15,57 +15,57 @@ const parseIdsAsInteger = (node) => {
   return newObj;
 };
 
-const regulatorNodes = regulators.map(parseIdsAsInteger);
-const regulatorLinks = [];
+export const regulatorNodes = regulators.map(parseIdsAsInteger);
+export const regulatorLinks = [];
 
-const questionNodes = questions
+export const questionNodes = questions
   .map((q) => ({ ...q, label: "Question" }))
   .map(parseIdsAsInteger);
-const questionLinks = questionNodes.map((q) => ({
+export const questionLinks = questionNodes.map((q) => ({
   source: q.id,
   target: q["id(regulator)"],
   label: "ABRIDGES",
 }));
 
-const answerNodes = answers
+export const answerNodes = answers
   .map((q) => ({ ...q, label: "Answer" }))
   .map(parseIdsAsInteger);
-const answerLinks = answerNodes.map((a) => ({
+export const answerLinks = answerNodes.map((a) => ({
   source: a.id,
   target: a["id(question)"],
   label: "ORGANIZES",
 }));
 
-const moduleNodes = modules.map(parseIdsAsInteger);
-const moduleLinks = moduleNodes.map((mod) => ({
+export const moduleNodes = modules.map(parseIdsAsInteger);
+export const moduleLinks = moduleNodes.map((mod) => ({
   source: mod["id(regulator)"],
   target: mod.id,
   label: "SLICED_INTO",
 }));
 
-const subjectNodes = subjects.map(parseIdsAsInteger);
-const subjectLinks = subjectNodes.map((subj) => ({
+export const subjectNodes = subjects.map(parseIdsAsInteger);
+export const subjectLinks = subjectNodes.map((subj) => ({
   source: subj["id(module)"],
   target: subj.id,
   label: "SLICED_INTO",
 }));
 
-const ruleNodes = rules.map(parseIdsAsInteger);
-const ruleLinks = ruleNodes.map((rule) => ({
+export const ruleNodes = rules.map(parseIdsAsInteger);
+export const ruleLinks = ruleNodes.map((rule) => ({
   source: rule["id(subject)"],
   target: rule.id,
   label: "SLICED_INTO",
 }));
 
-const requirementNodes = requirements.map(parseIdsAsInteger);
-const requirementLinks = requirementNodes.map((req) => ({
+export const requirementNodes = requirements.map(parseIdsAsInteger);
+export const requirementLinks = requirementNodes.map((req) => ({
   source: req["id(rule)"],
   target: req.id,
   label: "SLICED_INTO",
 }));
 
-const supportingInfoNodes = supportingInfos.map(parseIdsAsInteger);
-const supportingInfoLinks = [
+export const supportingInfoNodes = supportingInfos.map(parseIdsAsInteger);
+export const supportingInfoLinks = [
   ...supportingInfoNodes.map((si) => ({
     source: si["id(rule)"],
     target: si.id,
@@ -78,37 +78,6 @@ const supportingInfoLinks = [
   })),
 ];
 
-const supportingInfoLinks_DAGsafe = supportingInfoNodes.map((si) => ({
-  source: si["id(rule)"],
-  target: si.id,
-  label: "SLICED_INTO",
-}));
-
-export const nodes = [
-  //  const nodes = [
-  ...regulatorNodes,
-  ...questionNodes,
-  ...answerNodes,
-  ...moduleNodes,
-  ...subjectNodes,
-  ...ruleNodes,
-  ...requirementNodes,
-  ...supportingInfoNodes,
-];
-export const links = [
-  //  const links = [
-  ...regulatorLinks,
-  ...questionLinks,
-  ...answerLinks,
-  ...moduleLinks,
-  ...subjectLinks,
-  ...ruleLinks,
-  ...requirementLinks,
-  ...supportingInfoLinks,
-];
-
-console.log(nodes);
-console.log(links);
 /*
 RULES
 MATCH p=(reg:Regulator {name: "California Consumer Privacy Act (CCPA)"})-[:SLICED_INTO]->(module:Section)-[:SLICED_INTO]->(subject:Section)-[:SLICED_INTO]->(rule:Rule)

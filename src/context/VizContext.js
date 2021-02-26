@@ -8,11 +8,28 @@ import React, {
 import PropTypes from "prop-types";
 import { default as DIRECTIONS } from "../constants/dagDirections";
 import { forceCollide } from "d3-force";
-import { ForceGraph2D, ForceGraph3D } from "react-force-graph";
-import * as data from "../data";
+import { useTheme } from "@material-ui/core/styles";
 
-
-const ZOOM_DURATION = 3000; // ms
+import {
+  regulatorNodes,
+  questionNodes,
+  answerNodes,
+  moduleNodes,
+  subjectNodes,
+  ruleNodes,
+  requirementNodes,
+  supportingInfoNodes,
+  regulatorLinks,
+  questionLinks,
+  answerLinks,
+  moduleLinks,
+  subjectLinks,
+  ruleLinks,
+  requirementLinks,
+  supportingInfoLinks,
+} from "../data";
+import DIMENSIONS from "../constants/dimensions";
+import SpriteText from "three-spritetext";
 
 const VizContext = createContext({
   settings: {},
@@ -22,80 +39,211 @@ const VizContext = createContext({
 
 export default VizContext;
 
-const zoomToNode = (node, graphRef, ms = ZOOM_DURATION) => {
-  // Aim at node from outside it
-  const distance = 50;
-  const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+const ZOOM_DURATION = 3000; // ms
+const makeColorMap = (palette) => {
 
-  graphRef.current.cameraPosition(
-    {
-      x: node.x * distRatio,
-      y: node.y * distRatio,
-      z: node.z * distRatio,
-    }, // new position
-    node, // lookAt ({ x, y, z })
-    ms // ms transition duration
-  );
+  return {
+    Requirement: palette.error.main,
+    SupportingInformation: palette.success.main,
+    Rule: palette.warning.main,
+    AscentModule: palette.secondary.main,
+    Subject: palette.secondary.main,
+    Regulator: palette.primary.main,
+    Question: palette.info.light,
+    Answer: palette.info.dark,
+  };
 };
-const DIMENSIONS = {
-  TWO: "TWO",
-  THREE: "THREE",
+const use2dTextNodes = () => {
+  const nodeCanvasObject = (node, ctx, globalScale) => {
+    const colorMap = makeColorMap(palette);
+    const label = node.relational_type || node.label;
+    const fontSize = 16 / globalScale;
+    ctx.font = `${fontSize}px Sans-Serif`;
+    const textWidth = ctx.measureText(label).width;
+    const bckgDimensions = [textWidth, fontSize].map((n) => n + fontSize * 0.2); // some padding
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0)";
+    ctx.fillRect(
+      node.x - bckgDimensions[0] / 2,
+      node.y - bckgDimensions[1] / 2,
+      ...bckgDimensions
+    );
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = node.relational_type
+      ? colorMap[node.relational_type]
+      : colorMap[node.label];
+    ctx.fillText(label, node.x, node.y);
+
+    node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
+  };
+  const nodePointerAreaPaint = (node, color, ctx) => {
+    ctx.fillStyle = color;
+    const bckgDimensions = node.__bckgDimensions;
+    bckgDimensions &&
+      ctx.fillRect(
+        node.x - bckgDimensions[0] / 2,
+        node.y - bckgDimensions[1] / 2,
+        ...bckgDimensions
+      );
+  };
+
+  return { nodeCanvasObject, nodePointerAreaPaint };
 };
 export const VizProvider = ({ children }) => {
-  const { TWO, THREE } = DIMENSIONS;
-  const [nodes, setNodes] = useState(data.nodes);
-  const [links, setLinks] = useState(data.links);
-  const [dimension, setDimension] = useState(THREE);
-  const [activeNode, setActiveNode] = useState(false);
+  const { THREE } = DIMENSIONS;
+
+  const [particlesOn, setParticlesOn] = useState(false);
+  const [isTextNodes, setTextNodes] = useState(false);
+  const [allowCircularRefs, setAllowCircularRefs] = useState(false);
+  const [dimension, setActiveDimension] = useState(THREE);
+  const [activeNode, setActiveNode] = useState({});
   const [dagDirection, setDagDirection] = useState(DIRECTIONS.TD.value);
   const [isDAG, setIsDAG] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
+  // DATA
+  const DefaultNodes = [
+    ...regulatorNodes,
+    ...questionNodes,
+    ...answerNodes,
+    ...moduleNodes,
+    ...subjectNodes,
+    ...ruleNodes,
+    ...requirementNodes,
+  ];
+
+  const DefaultLinks = [
+    ...regulatorLinks,
+    ...questionLinks,
+    ...answerLinks,
+    ...moduleLinks,
+    ...subjectLinks,
+    ...ruleLinks,
+    ...requirementLinks,
+  ];
+
+  const [nodes, setNodes] = useState(DefaultNodes);
+  const [links, setLinks] = useState(DefaultLinks);
+
+  const enableCircularRefs = () => {
+    setAllowCircularRefs(!allowCircularRefs);
+    setNodes((nodes) => [...nodes, ...supportingInfoNodes]);
+    setLinks((links) => [...links, ...supportingInfoLinks]);
+  };
+  const disableCircularRefs = () => {
+    setAllowCircularRefs(!allowCircularRefs);
+    setNodes(DefaultNodes);
+    setLinks(DefaultLinks);
+  };
+
   const toggleShowDetails = () => setShowDetails(!showDetails);
   const graphRef = useRef();
 
-  const resetCameraView = useCallback(() => {
-    console.log("resetting view");
-    graphRef.current.zoomToFit();
-  }, [graphRef]);
-
-  const nodeColor = (node) => {
-    if (node.relational_type == "Requirement") return "red";
-    if (node.relational_type == "SupportingInformation") return "green";
-    if (node.relational_type == "Rule") return "blue";
-    if (node.relational_type == "AscentModule") return "purple";
-    if (node.relational_type == "Subject") return "purple";
-    if (node.relational_type == "Regulator") return "white";
-    return "white";
-  };
-
-
-  // CONTROLS
-  const toggleDag = () => setIsDAG(!isDAG);
-  const nodeLabel = (node) => node.relational_type || node.label;
-
-  const onNodeHover = () => {
-    setActiveNode(node);
-  };
-  const onNodeClick = (node) => {
-    zoomToClickedNode(node);
-    setTimeout(toggleShowDetails, ZOOM_DURATION / 2);
-  };
-  const zoomToClickedNode = useCallback((node) => zoomToNode(node, graphRef), [
-    graphRef,
-  ]);
-
-  const VizComponent = React.forwardRef(function Wrapper(props, ref) {
-   return dimension === TWO ? <ForceGraph2D ref={ref} {...props}/> : <ForceGraph3D ref={ref} {...props}/>
-  })
-
-
+  const toggleParticles = () => setParticlesOn(!particlesOn)
   const useForceUpdate = () => {
     const setToggle = useState(false)[1];
     return () => setToggle((b) => !b);
   };
 
+  const resetCameraView = useCallback(() => {
+    graphRef.current.zoomToFit(ZOOM_DURATION);
+  }, [graphRef]);
+
+  const { palette } = useTheme();
+
+  const nodeColor = (node) => {
+    const colorMap = makeColorMap(palette);
+    return node.relational_type
+      ? colorMap[node.relational_type]
+      : colorMap[node.label];
+  };
+
+  // CONTROLS
+  const toggleDag = () => {
+    setIsDAG(!isDAG);
+  };
+
+  const nodeThreeObject = (node) => {
+    const sprite = new SpriteText(node.relational_type || node.label);
+    sprite.color = node.relational_type
+      ? COLOR_MAP[node.relational_type]
+      : COLOR_MAP[node.label];
+    sprite.textHeight = 8;
+    return sprite;
+  };
+  const do3dZoom = useCallback(
+    (node, graphRef, ms) => {
+      // Aim at node from outside it
+      const distance = 50;
+      const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+      graphRef.current.cameraPosition(
+        {
+          x: node.x * distRatio,
+          y: node.y * distRatio,
+          z: node.z * distRatio,
+        }, // new position
+        node, // lookAt ({ x, y, z })
+        ms // ms transition duration
+      );
+    },
+    [graphRef]
+  );
+
+  const do2dZoom = useCallback(
+    (node, graphRef, ms) => {
+      graphRef.current.centerAt(node.x, node.y);
+      graphRef.current.zoom(10, ms);
+    },
+    [graphRef]
+  );
+
+  const zoomToNode = useCallback(
+    (node, graphRef, dimension, ms = ZOOM_DURATION) => {
+      if (dimension === DIMENSIONS.THREE) return do3dZoom(node, graphRef, ms);
+      return do2dZoom(node, graphRef, ms);
+    },
+    [dimension]
+  );
+
+  const { nodeCanvasObject, nodePointerAreaPaint } = use2dTextNodes();
+
+  const toggleTextNodes = () => {
+    setTextNodes(!isTextNodes);
+  };
+
+  const toggleCircularRefs = allowCircularRefs
+    ? disableCircularRefs
+    : enableCircularRefs;
+  const pauseAnimation = useCallback(() => graphRef.current.pauseAnimation(), [
+    graphRef,
+  ]);
+  const resumeAnimation = useCallback(
+    () => graphRef.current.resumeAnimation(),
+    [graphRef]
+  );
+
+  const nodeLabel = (node) => node.relational_type || node.label;
+
+  const onNodeClick = (node) => {
+    console.log("dimension on node click", dimension);
+    setActiveNode(node);
+    zoomToClickedNode(node);
+    toggleShowDetails();
+    // setTimeout(() => {
+    //   console.log("dimension on node click", dimension);
+    //   graphRef.current.pauseAnimation();
+    // }, ZOOM_DURATION);
+  };
+  const zoomToClickedNode = useCallback(
+    (node) => zoomToNode(node, graphRef, dimension),
+    [graphRef,dimension]
+  );
+
   useEffect(() => {
+    const {d3Force} = graphRef.current
     // add collision force
     graphRef.current.d3Force(
       "collision",
@@ -106,33 +254,51 @@ export const VizProvider = ({ children }) => {
   // SETTINGS
   const settings = {
     ref: graphRef,
-    backgroundColor: "#101020",
+    backgroundColor: palette.background.default,
     d3VelocityDecay: 0.2,
     dagLevelDistance: 100,
-    linkColor: (node) => "rgba(255,255,255,0.2)",
-    linkDirectionalParticles: 1,
-    linkDirectionalParticleWidth: 2,
+    linkLabel: link => link.label,
+    linkColor: (node) => "rgba(255,255,255,0.3)",
+    linkWidth: 1,
+    linkDirectionalParticles: particlesOn ? 1 : null,
+    linkDirectionalParticleWidth: particlesOn ? 2 : null,
     nodeColor,
     nodeLabel,
     onNodeClick,
     onBackgroundClick: () => resetCameraView(),
     nodeRelSize: 3,
+    nodeThreeObject: isTextNodes ? nodeThreeObject : null,
+    nodeCanvasObject: isTextNodes ? nodeCanvasObject : null,
+    nodePointerAreaPaint: isTextNodes ? nodePointerAreaPaint : null,
   };
   return (
     <VizContext.Provider
       value={{
-        VizComponent,
         graphRef,
         controls: {
+          toggleParticles,
+particlesOn,
+          isTextNodes,
+          toggleTextNodes,
+          toggleCircularRefs,
+          activeDimension: dimension,
+          setActiveDimension,
+          useForceUpdate,
+          nodes,
+          links,
           isDAG,
           toggleDag,
-          dagDirection,
           activeNode,
           onNodeClick,
+          dagDirection,
           showDetails,
+          allowCircularRefs,
+          setAllowCircularRefs,
           toggleShowDetails,
           setDagDirection,
           resetCameraView,
+          pauseAnimation,
+          resumeAnimation,
         },
         settings,
       }}

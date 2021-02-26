@@ -1,11 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Typography } from "@material-ui/core";
+import { ForceGraph2D, ForceGraph3D } from "react-force-graph";
 
-import { nodes, links } from "../data";
 import useVizControls from "../hooks/useVizControls";
-import useVizComponent from "../hooks/useVizComponent";
 import useVizSettings from "../hooks/useVizSettings";
 import DetailPanel from "./DetailPanel";
+import DIMENSIONS from "../constants/dimensions";
 
 const COLORS = {
   requirement: "red",
@@ -13,29 +13,30 @@ const COLORS = {
 };
 
 const Viz = () => {
-  const [data, setData] = useState({ nodes, links });
+  const [data, setData] = useState({});
   const {
     isDAG,
-    nodeColor,
-    nodeLabel,
-    onNodeClick,
-    resetCameraView,
+    activeDimension,
+
+    nodes,
+    links,
     dagDirection,
     graphRef,
   } = useVizControls();
 
-  const Vizualizer = useVizComponent();
+  const { TWO, THREE } = DIMENSIONS;
   const settings = useVizSettings();
+  const Vizualizer = activeDimension === TWO ? ForceGraph2D : ForceGraph3D;
 
   return (
     <>
       <DetailPanel />
       <Vizualizer
-      ref={graphRef}
+        ref={graphRef}
         {...settings}
         dagMode={isDAG ? dagDirection : null}
         enableNodeDrag={false}
-        graphData={data}
+        graphData={{ nodes, links }}
       />
     </>
   );
