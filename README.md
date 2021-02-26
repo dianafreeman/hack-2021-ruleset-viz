@@ -14,7 +14,7 @@
 
 > A Regulator/Ruleset Visualization Tool with 2D and 3D interative explorative features
 
-![Screenshot](https://github.com/dianafreeman/hack-2021-ruleset-viz/public/screenshot.png)
+![Screenshot](https://github.com/dianafreeman/hack-2021-ruleset-viz/blob/main/public/screenshot.png)
 ### 🏠 [Homepage](http://witty-memory.surge.sh)
 
 ## Install
