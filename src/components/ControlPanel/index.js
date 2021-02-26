@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Switch from "@material-ui/core/Switch";
-import FormGroup from "@material-ui/core/FormGroup";
+import IconButton from "@material-ui/core/IconButton";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { Typography } from "@material-ui/core";
 import useVizControls from "../../hooks/useVizControls";
-import { default as DAG_DIRECTION_MAP } from "../../constants/dagDirections";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import DIMENSIONS from "../../constants/dimensions";
+import { default as DAG_DIRECTION_MAP } from "../../constants/dagDirections";
 
 const { TWO, THREE } = DIMENSIONS;
 const useStyles = makeStyles({
@@ -180,33 +181,44 @@ function ControlPanel(props) {
   const [isOpen, setOpen] = useState(false);
   return (
     <Box p={1} w={1} className={classes.root}>
-      <DagControls />
-      <Box display="flex">
-        <Box px={2}>
-          <Typography variant="h6" align="left">
-            View In
-          </Typography>
-          <DimensionControl />
-        </Box>
-        <Box px={2}>
-          <Typography variant="h6" align="left">
-            Circular References
-          </Typography>
-          <CircularRefSettings />
-        </Box>
-        <Box px={2}>
-          <Typography variant="h6" align="left">
-            ParticleEmissions
-          </Typography>
-          <ParticleSettings />
-        </Box>
-        <Box px={2}>
-          <Typography variant="h6" align="left">
-            Text Nodes
-          </Typography>
-          <TextNodeSettings />
-        </Box>
-      </Box>
+      <IconButton
+        style={{ float: "right", marginRight: "10px" }}
+        onClick={() => setOpen(!isOpen)}
+      >
+        {isOpen ? <ExpandLess /> : <ExpandMore />}
+      </IconButton>
+      {isOpen && (
+        <>
+          <DagControls />
+          <Box display="flex">
+            <Box px={2}>
+              <Typography variant="h6" align="left">
+                Circular References
+              </Typography>
+              <CircularRefSettings />
+            </Box>
+
+            <Box px={2}>
+              <Typography variant="h6" align="left">
+                ParticleEmissions
+              </Typography>
+              <ParticleSettings />
+            </Box>
+            <Box px={2}>
+              <Typography variant="h6" align="left">
+                Text Nodes
+              </Typography>
+              <TextNodeSettings />
+            </Box>
+            <Box px={2}>
+              <Typography variant="h6" align="left">
+                View In
+              </Typography>
+              <DimensionControl />
+            </Box>
+          </Box>
+        </>
+      )}
     </Box>
   );
 }
