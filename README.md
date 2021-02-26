@@ -1,4 +1,5 @@
 <h1 align="center">I made a graph.📊</h1>
+<p align="center" style="color: red">Heads Up!: updates to this readme and convience tooling are in progress. If you pull this repo, be sure to rebase with master until this warning is gone.</p>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-0.3.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/dianafreeman/hack-2021-ruleset-viz#readme" target="_blank">
@@ -13,6 +14,7 @@
 </p>
 
 > A Regulator/Ruleset Visualization Tool with 2D and 3D interative explorative features
+
 
 ![Screenshot](https://github.com/dianafreeman/hack-2021-ruleset-viz/blob/main/public/screenshot.png)
 ### 🏠 [Take a look!](http://witty-memory.surge.sh)
